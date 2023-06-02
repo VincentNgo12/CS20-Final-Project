@@ -1,0 +1,492 @@
+/* Fonts */
+
+
+
+/* View Box */
+.viewBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+	  box-sizing: border-box;
+}
+
+/* Empty inbox message */
+.EmptyInboxMessage{
+  margin-top:150px;
+  text-align: center;
+}
+
+/* Encrypting box */
+.sectionBox {
+    position: relative;
+    min-height: 850px;
+    width: 70%;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    padding: 50px 40px;
+    color: white;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    box-shadow: 0 0.4px 0.4px rgba(128, 128, 128, 0.109), 0 1px 1px rgba(128, 128, 128, 0.155), 0 2.1px 2.1px rgba(128, 128, 128, 0.195), 0 4.4px 4.4px rgba(128, 128, 128, 0.241), 0 12px 12px rgba(128, 128, 128, 0.35);
+
+}
+
+.sectionBox.active{
+    display: flex;
+}
+
+.sectionBox > div{
+    width: 90%;
+}
+
+
+/* Cool Button */
+.coolButton {
+    padding: 8px 20px;
+    border-radius: 0;
+    overflow: hidden;
+}
+.coolButton::before {
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, var(--primary-color), transparent);
+    transform: translateX(-100%);
+    transition: 0.6s;
+}
+.coolButton:hover {
+    background: transparent;
+    box-shadow: 0 0 20px 10px rgba(51, 152, 219, 0.5);
+}
+.coolButton:hover::before {
+    transform: translateX(100%);
+}
+
+
+/* Randomize Button */
+#randomize:focus{outline:0;}
+
+button {
+  /* Variables */
+  --button_radius: 0.75em;
+  --button_color: #e8e8e8;
+  --button_outline_color: #000000;
+  font-size: 17px;
+  font-weight: bold;
+  border: none;
+  border-radius: var(--button_radius);
+  background: var(--button_outline_color);
+}
+
+.button_top {
+  display: block;
+  box-sizing: border-box;
+  border: 2px solid var(--button_outline_color);
+  border-radius: var(--button_radius);
+  padding: 0.75em 1.5em;
+  background: var(--button_color);
+  color: var(--button_outline_color);
+  transform: translateY(-0.2em);
+  transition: transform 0.1s ease;
+}
+
+button:hover .button_top {
+  /* Pull the button upwards when hovered */
+  transform: translateY(-0.33em);
+}
+
+button:active .button_top {
+  /* Push the button downwards when pressed */
+  transform: translateY(0);
+}
+
+
+
+/* Select Box Dropdown */
+.select-box {
+    cursor: pointer;
+    position: relative;
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+    font-size: 18px;
+    color: #60666d;
+}
+
+
+/* Input bars */
+.textInputWrapper {
+    position: relative;
+    width: 100%;
+    margin: 12px 0px;
+    --accent-color: #5376ad;
+  }
+
+  .textInputWrapper:before {
+    transition: border-bottom-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+  }
+
+  .textInputWrapper:before,
+  .textInputWrapper:after {
+    content: "";
+    left: 0;
+    right: 0;
+    position: absolute;
+    pointer-events: none;
+    bottom: -1px;
+    z-index: 4;
+    width: 100%;
+  }
+
+  .textInputWrapper:focus-within:before {
+    border-bottom: 1px solid var(--accent-color);
+  }
+
+  .textInputWrapper:before {
+    transition: border-bottom-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+  }
+
+  .textInputWrapper:focus-within:before {
+    border-bottom: 1px solid var(--accent-color);
+    transform: scaleX(1);
+  }
+
+  .textInputWrapper:focus-within:after {
+    border-bottom: 2px solid var(--accent-color);
+    transform: scaleX(1);
+  }
+
+  .textInputWrapper:after {
+    content: "";
+    transform: scaleX(0);
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+    will-change: transform;
+    border-bottom: 2px solid var(--accent-color);
+    border-bottom-color: var(--accent-color);
+  }
+
+  .textInput::placeholder {
+    transition: opacity 1200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+    opacity: 1;
+    user-select: none;
+    color: rgba(56, 56, 56, 0.782);
+  }
+
+  .textInputWrapper .textInput {
+    border-radius: 5px 5px 0px 0px;
+    box-shadow: 0px 2px 5px rgb(35 35 35 / 30%);
+    max-height: 36px;
+    background-color: #d9ddde;
+    transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition-duration: 200ms;
+    transition-property: background-color;
+    color: #383838;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px;
+    width: 100%;
+    border-left: none;
+    border-bottom: none;
+    border-right: none;
+  }
+
+  .textInputWrapper .textInput:focus,
+  .textInputWrapper .textInput:active {
+    outline: none;
+  }
+
+  .textInputWrapper:focus-within .textInput,
+  .textInputWrapper .textInput:focus,
+  .textInputWrapper .textInput:active {
+    background-color: #d9ddde;
+  }
+
+  .textInputWrapper:focus-within .textInput::placeholder {
+    opacity: 0;
+  }
+
+
+/* Label */
+  label{
+    color: white;
+    padding-top: 0;
+    padding-left: 0;
+    letter-spacing: .025em;
+    font-size: 1.125em;
+    line-height: 1.25;
+    position: relative;
+  }
+
+
+  /* Text area stylings */
+
+.input100 {
+	display: block;
+	width: 100%;
+	font-size: 18px;
+	color: #333;
+	line-height: 1.2;
+	padding: 0 25px;
+  min-height: 162px;
+	padding-top: 19px;
+	padding-bottom: 15px
+
+  pointer-events: none;
+	border: 2px solid;
+	border-color: #a9ced9;
+	opacity: 0.5;
+	-webkit-transition: all .4s;
+	-o-transition: all .4s;
+	-moz-transition: all .4s;
+	transition: all .4s;
+}
+
+.input100:focus{
+	opacity: 1;
+}
+
+
+/* POP UP Window */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popUpWindow {
+  border-radius: 15px;
+  background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 20px;
+  min-width: 450px;
+  min-height: 200px;
+}
+
+
+/* CheckBox Toggle For Sending messages */
+/* The switch - the box around the slider */
+.switch {
+  font-size: 17px;
+  position: relative;
+  display: inline-block;
+  width: 7.2em;
+  height: 2em;
+  overflow: hidden;
+}
+
+/* Hide default HTML checkbox */
+.switch .toggleSwitch {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #e64340;
+  transition: .5s;
+  border-radius: 30px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 1.4em;
+  width: 1.4em;
+  border-radius: 20px;
+  border: 1px solid #333;
+  left: 0.4em;
+  bottom: 0.25em;
+  background-color: white;
+  transition: .4s;
+}
+
+.toggleSwitch:checked + .slider {
+  background-color: #2196F3;
+}
+
+.toggleSwitch:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+.toggleSwitch:checked + .slider:before {
+  transform: translateX(5em);
+}
+
+.switch .text {
+  position: absolute;
+  top: 50%;
+  pointer-events: none;
+  text-transform: uppercase;
+  transform: translateY(-50%);
+  transition: .5s;
+}
+
+.switch .text.on {
+  font-weight: 500;
+  left: .8rem;
+  transform: translateX(-5rem) translateY(-50%);
+}
+
+.switch .text.off {
+  font-weight: 500;
+  color: white;
+  right: .8rem;
+}
+
+.toggleSwitch:checked ~ .text.off {
+  transform: translateX(7rem) translateY(-50%);
+}
+
+.toggleSwitch:checked ~ .text.on {
+  transform: translateX(0) translateY(-50%);
+}
+
+
+/* Styling for validations */
+.validationFailed{
+  border: 2px solid #cc121f !important;
+  transition: border-color 0.5s ease-in-out;
+}
+
+.validationFailed:focus{
+  border-color: #5376ad !important;
+}
+
+.validationSuccess{
+  border: 2px solid #0ddb52 !important;
+  transition: border-color 0.5s ease-in-out;
+}
+
+.validationErrorMessage{
+  font-size:15px;
+  color: #cc121f;
+  font-style: italic;
+}
+
+/* Message cards */
+.card-container {
+  width: 100%;
+  margin: auto;
+  margin-top: 2em;
+  background-color: #fff;
+  border: 1px solid #333;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  font-size: 20px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.card-body {
+  padding: 10px;
+  color: #4a4646;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.message-decrypt-button, .message-remove-button {
+  background-color: #333;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.message-decrypt-button:hover{
+  background-color: #35d43d;
+  color: lightcyan;
+}
+
+.message-remove-button:hover {
+  background-color: crimson;
+  color: white;
+}
+
+.role-icon-public {
+  font-size: 10px;
+  max-width:55px;
+  color: lightcyan;
+  font-weight: bold;
+  text-transform: uppercase;
+  background-color: lightskyblue;
+  padding: 4px 10px;
+  border-radius: 15px;
+}
+
+.role-icon-private {
+  font-size: 10px;
+  max-width:55px;
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  background-color: crimson;
+  padding: 4px 10px;
+  border-radius: 15px;
+}
+
+/* username input for sending messages */
+.secrect-username-input {
+  margin: auto;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  background-color: #383838;
+  border: 1ex solid none;
+  border-top-width: 1.7em;
+  width: 50%;
+  padding: 0;
+  color: #383838;
+  word-wrap: break-word;
+  outline: 7px solid #383838;
+  height: 30px;
+  font-size: 17px;
+  text-align: center;
+  transition: all 1s;
+  max-width: 190px;
+  font-weight: bold;
+  font-family: 'Courier New', Courier, monospace;
+ }
+
+ .secrect-username-input:hover {
+  border-top-width: 0.2em;
+  background-color: #f1e8e8;
+ }
+
+ .secrect-username-input:focus {
+  border-top-width: 0.2em;
+  background-color: #f1e8e8;
+ }

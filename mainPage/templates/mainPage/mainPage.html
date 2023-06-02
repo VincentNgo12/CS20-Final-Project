@@ -1,0 +1,68 @@
+{% extends "mainPage/layout.html"%}
+{% load static %}
+
+{% block title%}
+Main Page
+{% endblock%}
+
+{% block style %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro&display=swap" rel="stylesheet">
+{% endblock %}
+
+
+{% block body %}
+<div class="back-ground-gradient ">
+    <div style="background-color:#3461c1; height:300px; text-align:center;">
+        <div style="padding:80px; color:white;">
+            <h1 style="font-size:80px; letter-spacing: 20px;" class="title"><span id="title-span">CS20</span></h1><br/>
+            <h3 class="title" id="scramblingText">FINAL PROJECT</h3>
+        </div>
+    </div>
+    <svg class="editorial"
+         xmlns="http://www.w3.org/2000/svg"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         viewBox="0 24 150 28 "
+         preserveAspectRatio="none">
+     <defs>
+     <path id="gentle-wave"
+     d="M-160 44c30 0
+        58-18 88-18s
+        58 18 88 18
+        58-18 88-18
+        58 18 88 18
+        v44h-352z" />
+      </defs>
+      <g class="parallax1">
+       <use xlink:href="#gentle-wave" x="50" y="3" fill="#f461c1"/>
+      </g>
+        <g class="parallax2">
+       <use xlink:href="#gentle-wave" x="50" y="0" fill="#4579e2"/>
+        </g>
+          <g class="parallax3">
+       <use xlink:href="#gentle-wave" x="50" y="9" fill="#168dab"/>
+       </g>
+        <g class="parallax4">
+       <use xlink:href="#gentle-wave" x="50" y="6" fill="#3461c1"/>
+      </g>
+    </svg>
+    <!-- Scroll down arrow -->
+    <svg class="arrows">
+      <path class="a1" d="M0 0 L30 32 L60 0"></path>
+      <path class="a2" d="M0 20 L30 52 L60 20"></path>
+      <path class="a3" d="M0 40 L30 72 L60 40"></path>
+    </svg>
+
+    <!-- My Project -->
+    <div style="justify-content: center; align-items: center; display: flex; margin-top:150px;" id="MyProjects">
+      <a href="{% url 'EnigmaFrontPage' %}" style="font-family: 'Source Serif Pro', serif;">My Enigma Simulator</a>
+    </div>
+</div>
+
+
+{% endblock%}
+
+{% block script %}
+<script src="{% static 'EnigmaMachine/textScramble.js' %}"></script>
+{% endblock %}

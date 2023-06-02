@@ -1,0 +1,319 @@
+{% extends "mainPage/layout.html" %}
+{% load static %}
+
+{% block style %}
+    <link href="{% static 'EnigmaMachine/styles.css' %}" rel="stylesheet">
+    <link href="{% static 'EnigmaMachine/navbar.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+
+<div class="viewBox">
+
+  <!-- nav Bars -->
+  <ul class="nav nav-pills" role="tablist">
+    <li class="nav-item" id="toggleEncryptButton">
+      <a class="nav-link active" data-toggle="pill" id="nav-link-encrypt" style="border-top-left-radius: 50px" >Encrypt</a>
+    </li>
+    <li class="nav-item" id="toggleMessageButton">
+      <a class="nav-link" data-toggle="pill" id="nav-link-message" style="border-top-right-radius: 50px" >Messages</a>
+    </li>
+  </ul>
+
+  <div id="encryptingSection" class="sectionBox active">
+    <h2 style="margin-top:auto;">Encrypt Message</h2>
+    <!-- rotors select dropdowns -->
+    <div class="d-flex flex-row" >
+      <select id="rotor1" class="select-box">
+        <option value="" disabled selected>Rotor 1</option>
+        {% for rotor in rotors %}
+          <option value="{{rotor}}">{{rotor}}</option>
+        {% endfor %}
+      </select>
+      <select id="rotor2" class="select-box">
+        <option value="" disabled selected>Rotor 2</option>
+        {% for rotor in rotors %}
+          <option value="{{rotor}}">{{rotor}}</option>
+        {% endfor %}
+      </select>
+      <select id="rotor3" class="select-box">
+        <option value="" disabled selected>Rotor 3</option>
+        {% for rotor in rotors %}
+          <option value="{{rotor}}">{{rotor}}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="validationErrorMessage"></div>
+
+    <!-- Inputs  -->
+    <div class="row mt-4">
+      <div class="col-8 p-0">
+        <div class="textInputWrapper" style="z-index:0;">
+          <label for="plugSetting">Plug Setting</label>
+          <input placeholder="Ex: GH-PO-CK-ZX" type="text" class="textInput" id="plugSetting">
+          <div class="validationErrorMessage"></div>
+        </div>
+      </div>
+
+      <div class="col-3 p-0 ml-auto">
+        <div class="textInputWrapper" style="z-index:0;">
+          <label for="rotorsPosition">Rotor Position</label>
+          <input placeholder="Ex: HUY" type="text" class="textInput" id="rotorsPosition">
+          <div class="validationErrorMessage"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Button -->
+    <button id="randomize">
+      <span class="button_top">Randomize Settings</span>
+    </button>
+
+    <!-- Plain text and Encrypted text -->
+    <div class="d-flex flex-column">
+      <!-- Plain text -->
+      <div class="p-2">
+        <label for="plainText">Plain Text</label><br>
+        <textarea placeholder="Type Your Message Here" class="input100" id="plainText"></textarea>
+      </div>
+      <!-- Encryted Text -->
+      <div class="p-2">
+        <h3 style="background-color: #cdd1d1; color: black; margin: 20px 0 0 0; padding: 20px; font-weight: bold;">Encrypted Text</h3>
+        <div style="border: 2px solid #cdd1d1; border-top: none; padding: 20px; margin: 0 0 20px 0;">
+          <p id="encryptedText"></p>
+        </div>
+      </div>
+    </div>
+    {% if user.is_authenticated %}
+    <!-- Send Messages -->
+    <button type="button" class="btn btn-outline-info" id="openSendWindow">Send Message</button>
+    {% else %}
+    <h5>Please Sign In To Send Messages</h5>
+    {% endif %}
+  </div>
+
+
+  <div id="messagesSection" class="sectionBox">
+
+  </div>
+
+  <div id="popUpWindow"></div>
+
+</div>
+{% endblock %}
+
+{% block script%}
+
+    <script src="{% static 'EnigmaMachine/simulator.js' %}"></script>
+    <script src="{% static 'EnigmaMachine/functions.js' %}"></script>
+    <script src="{% static 'EnigmaMachine/validateInput.js' %}"></script>
+
+    <!-- My React Components -->
+    <script src="{% static 'EnigmaMachine/Components/MyComponent.js' %}" data-type="module" type="text/babel"></script>
+
+
+
+    <script>
+      toggleEncryptingSection()
+
+      document.querySelector("#plainText").oninput = encrypt;
+      document.querySelector("#randomize").onclick = randomizeSetting;
+
+      document.querySelector("#toggleEncryptButton").onclick = toggleEncryptingSection;
+      document.querySelector("#toggleMessageButton").onclick = toggleMessagesSection;
+
+    </script>
+
+    <script>
+    </script>
+
+
+    <script data-type="module" type="text/babel">
+      const currentUserName = "{{user}}";
+
+      //Messages Section
+      function MessagesSection(){
+        const [refreshMessages, setRefreshMessages] = React.useState(false);
+        const [totalPages, setTotalPages] = React.useState(1)
+        const [currentPage, setCurrentPage] = React.useState(1)
+        const [selectedGroup, setSelectedGroup] = React.useState("public")
+
+        const changeGroup = (event) => {
+          setSelectedGroup(event.target.value)
+        }
+        // Changing pages
+        const previousPage = () => {
+          if (currentPage > 1){
+            setCurrentPage(currentPage-1);
+          }
+        }
+
+        const nextPage = () => {
+          if (currentPage < totalPages){
+            setCurrentPage(currentPage+1);
+          }
+        }
+        // Pagination lists
+        const paginationList = (totalPages) => {
+          let pageList = [];
+          let styleClass;
+          for(let i = 1; i<=totalPages; i++){
+            i === currentPage? (styleClass = "page-item active") : (styleClass = "page-item");
+            pageList.push(<li className={styleClass} key={i}><a className="page-link" href="#messagesSection" onClick={() => setCurrentPage(i)}>{i}</a></li>);
+          }
+          return pageList;
+        }
+        // The actual Message Section
+        return(
+          <>
+            <div id="messageSectionAlert"></div>
+            <h2>Messages</h2>
+            {/* Select and refresh buttons */}
+            <div className="d-inline-flex justify-content-around p-2">
+              <select id="selectMessageGroup" value={selectedGroup} onChange={changeGroup}>
+                <option value="public">Public</option>
+                <option value="private">Private</option>
+                <option value="me">To Me</option>
+                <option value="sent">Sent</option>
+                <option value="all">All</option>
+              </select>
+              <button type="button" className="btn btn-info" onClick={() => {setRefreshMessages(!refreshMessages)}}>Refresh</button>
+            </div>
+
+            <div id="messagesList">
+              <LoadMessages group={selectedGroup} setTotalPages={setTotalPages} currentPage={currentPage} refreshMessages={refreshMessages} setRefreshMessages={setRefreshMessages}/>
+            </div>
+            {/* Pagination navigation*/}
+              <nav aria-label="..." className="mt-auto">
+              <ul className="pagination mt-4">
+                <li className="page-item ">
+                  <a className="page-link" href="#messagesSection" key="previous" onClick={previousPage}>
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                {paginationList(totalPages)}
+                <li className="page-item" key="next" onClick={nextPage}>
+                  <a className="page-link" aria-label="Next" href="#messagesSection">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </>
+        )
+      }
+
+
+      function LoadMessages(props){
+        const [messages, setMessages] = React.useState([]);
+
+        // Handle removing message
+        const handleRemovedMessage = (messageID) => {
+          removeMessage(messageID)
+          .then(result => {
+            if (result){
+              props.setRefreshMessages(!props.refreshMessages);
+            }
+          })
+        }
+
+        // Fetching messages from my api
+        const fetchMessages = () =>{
+            fetch(`messages/${props.group}`)
+            .then(response => response.json())
+            .then(messages => {
+              setMessages(messages);
+              props.setTotalPages(Math.ceil(messages.length/5))
+            });
+        }
+
+
+        // fetch only when the array is empty
+        React.useEffect(()=>{
+            fetchMessages();
+        }, [props.group, props.refreshMessages]);
+
+
+        // List of MEssages
+        return(
+            <>
+                {messages.length === 0 && <h1 className="EmptyInboxMessage">There is nothing in this inbox</h1>}
+                {messages
+                  // Showing only 5 messages at a time
+                  .slice((props.currentPage-1)*5, props.currentPage*5)
+                  .map(message => (
+                    <div key={message.id} className="card-container">
+                      <div className="card-header">
+                        <p className="d-inline mr-3">From: {message["sender"]}</p>
+                        {message["public"] ? <div className="role-icon-public d-inline">Public</div> : <div className="role-icon-private d-inline">Private</div>}<br/>
+                        {!message["public"] && <p>Recipient: {message["recipient"]}</p>}
+                        <small>{message["timestamp"]}</small>
+                      </div>
+                      <div className="card-body">
+                        <h5>{message.content}</h5>
+                      </div>
+                      <div className="card-footer">
+                          {(message.sender !== currentUserName && message.recipient!== currentUserName && !message["public"]) ? <button className="message-remove-button">This is a Private Message</button> : <button className="message-decrypt-button" onClick = {() => decrypt(message.id)}>Decrypt</button>}
+                          {message.sender === currentUserName && <button className="message-remove-button" onClick = {() => handleRemovedMessage(message.id)}>Remove</button>}
+                      </div>
+                    </div>
+                ))}
+            </>
+        )
+    }
+
+
+  ReactDOM.render(<MessagesSection/>, document.querySelector("#messagesSection"));
+
+    </script>
+
+<script data-type="module" type="text/babel">
+  function SendMessageWindow(props){
+    const [open,setOpen] = React.useState(false);
+    const [togglePublic, setTogglePublic] = React.useState(true);
+
+    const toggleOpen = () => {
+      setOpen(!open);
+    }
+
+    // Handle sending messages
+    const handleSendMessage = () => {
+      let recipientInput = document.querySelector("#recipientUsername");
+      let recipient = recipientInput? recipientInput.value : "";
+      sendMessage(togglePublic, recipient);
+    }
+
+    document.querySelector("#openSendWindow").onclick = toggleOpen;
+
+    return(
+      <>
+        {open && (
+          <div className="overlay">
+            <div className="popUpWindow">
+              <div id="windowAlertMessage"></div>
+              <div className="d-flex flex-column">
+                <label className="switch">
+                  <input type="checkbox" className="toggleSwitch" checked={togglePublic} onChange={(event) => {setTogglePublic(event.target.checked)}}/>
+                  <span className="slider"></span>
+                  <span className="text on">Public</span>
+                  <span className="text off">Private</span>
+                </label>
+                {/*Show only when the setting is Private*/}
+                {!togglePublic && (
+                  <input placeholder="Enter Username" type="text" className="secrect-username-input" id="recipientUsername"/>
+                )}
+                {/*Send buttons*/}
+                <div className="d-flex flex-row justify-content-end">
+                  <button type="button" className="btn btn-outline-danger mr-3" onClick={toggleOpen}>Close</button>
+                  <button type="button" className="btn btn-outline-info" onClick={handleSendMessage}>Send Message</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </>
+    )
+  }
+
+  ReactDOM.render(<SendMessageWindow/>, document.querySelector("#popUpWindow"));
+</script>
+{% endblock %}

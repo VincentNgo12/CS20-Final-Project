@@ -1,0 +1,47 @@
+{% extends "mainPage/layout.html" %}
+{% load static %}
+
+{% block style%}
+<link href="{% static 'mainPage/Home.css' %}" rel="stylesheet">
+<link href="{% static 'mainPage/nicepage.css' %}" rel="stylesheet">
+<link href="{% static 'mainPage/Post-Template.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+{% block body %}
+<div id="EnigmaMainPage">
+  <!-- <header class="masterhead" style="min-height: 100vh; background-image: url('https://images.unsplash.com/photo-1572435555646-7ad9a149ad91?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80');">
+  </header> -->
+  <section class="u-clearfix u-image u-shading u-section-1" id="carousel_31a3">
+    <div class="u-clearfix u-sheet u-valign-middle-lg u-valign-middle-md u-valign-middle-xl u-valign-middle-xs u-sheet-1">
+      <div class="u-clearfix u-expanded-width-sm u-expanded-width-xs u-layout-wrap u-layout-wrap-1">
+        <div class="u-layout">
+          <div class="u-layout-row">
+            <div class="u-container-style u-layout-cell u-left-cell u-opacity u-opacity-50 u-palette-1-base u-size-15 u-layout-cell-1">
+              <div class="u-container-layout u-container-layout-1"></div>
+            </div>
+            <div class="u-container-style u-layout-cell u-right-cell u-size-45 u-layout-cell-2">
+              <div class="u-container-layout u-valign-bottom u-container-layout-2">
+                <h1 class="u-text u-title u-text-1">My Enigma<br>Simulator
+                </h1>
+                <!-- Button -->
+                <div class="button-borders mt-5">
+                  <button class="pretty-cool-button" id="playNowButton"> PLAY NOW
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+  document.querySelector("#playNowButton").onclick = () => {window.location.href = "{% url 'EnigmaSimulator' %}";}
+</script>
+{% endblock %}
