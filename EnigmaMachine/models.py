@@ -1,6 +1,7 @@
 from mainPage.models import User
 from django.utils import timezone
 from django.db import models
+from django.utils import timezone
 
 
 
@@ -32,7 +33,7 @@ class Message(models.Model):
             "rotors": self.rotors,
             "plugSetting": self.plugBoardSetting,
             "position": self.rotorPositions,
-            "timestamp": self.timestamp.strftime("%b %d %Y, %I:%M %p"),
+            "timestamp": timezone.localtime(self.timestamp).strftime("%b %d %Y, %I:%M %p"),
             "read": self.read,
             "saved": self.saved,
             "public": self.public,
